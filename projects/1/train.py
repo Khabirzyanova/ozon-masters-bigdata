@@ -1,5 +1,5 @@
 
-!/opt/conda/envs/dsenv/bin/python
+# !/opt/conda/envs/dsenv/bin/python
 
 import os, sys
 import logging
