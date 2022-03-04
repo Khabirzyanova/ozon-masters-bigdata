@@ -102,13 +102,7 @@ class DLRM(tf.keras.Model):
 # Now we have a full prediction pipeline.
 model = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('DLRM', DLRM(
-    embedding_sizes=emb_counts,
-    embedding_dim=2,
-    arch_bot=[8, 2],
-    arch_top=[128, 64, 2],
-    self_interaction=False)
-    )
+    ('DLRM', DLRM()
 ])
 
 
