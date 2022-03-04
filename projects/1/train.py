@@ -74,14 +74,6 @@ ds_test = ds_test.skip(len(ds_valid))
 #
 # Train the model
 
-model = DLRM(
-    embedding_sizes=emb_counts,
-    embedding_dim=2,
-    arch_bot=[8, 2],
-    arch_top=[128, 64, 2],
-    self_interaction=False
-)
-
 model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
     loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
@@ -90,22 +82,27 @@ model.compile(
 
 BATCH_SIZE = 128
 
-history =model.fit(
-    ds_train.batch(BATCH_SIZE),
-    validation_data=ds_valid.batch(BATCH_SIZE),
-    callbacks=[
-        tf.keras.callbacks.EarlyStopping(patience=6, restore_best_weights=True)
+model.fit(
+  ds_train.batch(BATCH_SIZE),
+  validation_data=ds_valid.batch(BATCH_SIZE),
+  callbacks=[
+    tf.keras.callbacks.EarlyStopping(patience=6, restore_best_weights=True)
     ],
-    epochs=100,
-    verbose=1,
+  epochs=100,
+  verbose=1,
 )
 
+model_score = model.evaluate(ds_test.batch(BATCH_SIZE))
+# print(f'Loss {results[0]}, Accuracy {results[1]}')
+logging.info(f"model score: {model_score[0]:.3f}")
+
+
 #
-model.fit(X_train, y_train)
+# model.fit(X_train, y_train)
 
-model_score = model.score(X_test, y_test)
+# model_score = model.score(X_test, y_test)
 
-logging.info(f"model score: {model_score:.3f}")
+# logging.info(f"model score: {model_score:.3f}")
 
 # save the model
 dump(model, "{}.joblib".format(proj_id))
