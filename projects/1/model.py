@@ -5,9 +5,11 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, GridSearchCV
 
+from catboost import CatBoostClassifier
+from xgboost import XGBClassifier
 # pip install --upgrade tensorflow
-from tensorflow import keras
-from keras.utils.np_utils import to_categorical
+# from tensorflow import keras
+# from keras.utils.np_utils import to_categorical
 
 
 # Dataset fields
