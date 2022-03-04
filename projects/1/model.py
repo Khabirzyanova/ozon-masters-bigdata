@@ -107,7 +107,7 @@ model = Pipeline(steps=[
         embedding_dim=2,
         arch_bot=[8, 2],
         arch_top=[128, 64, 2],
-        self_interaction=False)])
+        self_interaction=False))])
 
 
 # model = DLRM(
