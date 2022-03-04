@@ -38,90 +38,90 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# Functions for Deep Learning Recommendation Model DLRM
-def MLP(arch, activation='relu', out_activation=None):
-    mlp = tf.keras.Sequential()
+# # Functions for Deep Learning Recommendation Model DLRM
+# def MLP(arch, activation='relu', out_activation=None):
+#     mlp = tf.keras.Sequential()
 
-    for units in arch[:-1]:
-        mlp.add(tf.keras.layers.Dense(units, activation=activation))
+#     for units in arch[:-1]:
+#         mlp.add(tf.keras.layers.Dense(units, activation=activation))
 
-    mlp.add(tf.keras.layers.Dense(arch[-1], activation=out_activation))
+#     mlp.add(tf.keras.layers.Dense(arch[-1], activation=out_activation))
 
-    return mlp
-
-
-class SecondOrderFeatureInteraction(tf.keras.layers.Layer):
-    def __init__(self, self_interaction=False):
-        super(SecondOrderFeatureInteraction, self).__init__()
-        self.self_interaction = self_interaction
-
-    def call(self, inputs):
-        batch_size = tf.shape(inputs[0])[0]
-        concat_features = tf.stack(inputs, axis=1)
-
-        dot_products = tf.matmul(concat_features, concat_features, transpose_b=True)
-
-        ones = tf.ones_like(dot_products)
-        mask = tf.linalg.band_part(ones, 0, -1)
-        out_dim = int(len(inputs) * (len(inputs) + 1) / 2)
-
-        if not self.self_interaction:
-            mask = mask - tf.linalg.band_part(ones, 0, 0)
-            out_dim = int(len(inputs) * (len(inputs) - 1) / 2)
-
-        flat_interactions = tf.reshape(tf.boolean_mask(dot_products, mask), (batch_size, out_dim))
-        return flat_interactions
+#     return mlp
 
 
-class DLRM(tf.keras.Model):
-    def __init__(
-            self,
-            embedding_sizes,
-            embedding_dim,
-            arch_bot,
-            arch_top,
-            self_interaction,
-    ):
-        super(DLRM, self).__init__()
-        self.emb = [tf.keras.layers.Embedding(size, embedding_dim) for size in embedding_sizes]
-        self.bot_nn = MLP(arch_bot, out_activation='relu')
-        self.top_nn = MLP(arch_top, out_activation='sigmoid')
-        self.interaction_op = SecondOrderFeatureInteraction(self_interaction)
+# class SecondOrderFeatureInteraction(tf.keras.layers.Layer):
+#     def __init__(self, self_interaction=False):
+#         super(SecondOrderFeatureInteraction, self).__init__()
+#         self.self_interaction = self_interaction
 
-    def call(self, input):
-        input_dense, input_cat = input
-        emb_x = [E(x) for E, x in zip(self.emb, tf.unstack(input_cat, axis=1))]
-        dense_x = self.bot_nn(input_dense)
+#     def call(self, inputs):
+#         batch_size = tf.shape(inputs[0])[0]
+#         concat_features = tf.stack(inputs, axis=1)
 
-        Z = self.interaction_op(emb_x + [dense_x])
-        z = tf.concat([dense_x, Z], axis=1)
-        p = self.top_nn(z)
+#         dot_products = tf.matmul(concat_features, concat_features, transpose_b=True)
 
-        return p
+#         ones = tf.ones_like(dot_products)
+#         mask = tf.linalg.band_part(ones, 0, -1)
+#         out_dim = int(len(inputs) * (len(inputs) + 1) / 2)
 
-# Now we have a full prediction pipeline.
-model = Pipeline(steps=[
-    ('preprocessor', preprocessor),
-    ('DLRM', DLRM(
-        embedding_sizes=emb_counts,
-        embedding_dim=2,
-        arch_bot=[8, 2],
-        arch_top=[128, 64, 2],
-        self_interaction=False
-    )
-])
+#         if not self.self_interaction:
+#             mask = mask - tf.linalg.band_part(ones, 0, 0)
+#             out_dim = int(len(inputs) * (len(inputs) - 1) / 2)
+
+#         flat_interactions = tf.reshape(tf.boolean_mask(dot_products, mask), (batch_size, out_dim))
+#         return flat_interactions
 
 
-# model = DLRM(
-#     embedding_sizes=emb_counts,
-#     embedding_dim=2,
-#     arch_bot=[8, 2],
-#     arch_top=[128, 64, 2],
-#     self_interaction=False
-# )
+# class DLRM(tf.keras.Model):
+#     def __init__(
+#             self,
+#             embedding_sizes,
+#             embedding_dim,
+#             arch_bot,
+#             arch_top,
+#             self_interaction,
+#     ):
+#         super(DLRM, self).__init__()
+#         self.emb = [tf.keras.layers.Embedding(size, embedding_dim) for size in embedding_sizes]
+#         self.bot_nn = MLP(arch_bot, out_activation='relu')
+#         self.top_nn = MLP(arch_top, out_activation='sigmoid')
+#         self.interaction_op = SecondOrderFeatureInteraction(self_interaction)
 
+#     def call(self, input):
+#         input_dense, input_cat = input
+#         emb_x = [E(x) for E, x in zip(self.emb, tf.unstack(input_cat, axis=1))]
+#         dense_x = self.bot_nn(input_dense)
 
+#         Z = self.interaction_op(emb_x + [dense_x])
+#         z = tf.concat([dense_x, Z], axis=1)
+#         p = self.top_nn(z)
+
+#         return p
+
+# # Now we have a full prediction pipeline.
 # model = Pipeline(steps=[
 #     ('preprocessor', preprocessor),
-#     ('linearregression', LinearRegression())
+#     ('DLRM', DLRM(
+#         embedding_sizes=emb_counts,
+#         embedding_dim=2,
+#         arch_bot=[8, 2],
+#         arch_top=[128, 64, 2],
+#         self_interaction=False
+#     )
 # ])
+
+
+# # model = DLRM(
+# #     embedding_sizes=emb_counts,
+# #     embedding_dim=2,
+# #     arch_bot=[8, 2],
+# #     arch_top=[128, 64, 2],
+# #     self_interaction=False
+# # )
+
+
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('linearregression', LinearRegression())
+])
