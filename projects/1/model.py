@@ -5,6 +5,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, GridSearchCV
 
+!pip3 install tensorflow
 import tensorflow as tf
 from keras.utils.np_utils import to_categorical
 
