@@ -5,7 +5,7 @@ import os, sys
 import logging
 
 import pandas as pd
-# from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split
 from joblib import dump
 
 #
@@ -46,63 +46,63 @@ read_table_opts = dict(sep=",", names=fields, index_col=False)
 df = pd.read_table(train_path, **read_table_opts)
 
 #split train/test
-# X_train, X_test, y_train, y_test = train_test_split(
-#     df.iloc[:,:-1], df.iloc[:,-1], test_size=0.33, random_state=42
-# )
+X_train, X_test, y_train, y_test = train_test_split(
+    df.iloc[:,:-1], df.iloc[:,-1], test_size=0.33, random_state=42
+)
 
-TRAIN_SPLIT = 0.2
-VALIDATION_SPLIT = 0.5
+# TRAIN_SPLIT = 0.2
+# VALIDATION_SPLIT = 0.5
 
-ds = tf.data.Dataset.zip((
-    tf.data.Dataset.from_tensor_slices((
-        tf.cast(df[dense_cols].values, tf.float32),
-        tf.cast(df[cat_cols].values, tf.int32),
-    )),
-    tf.data.Dataset.from_tensor_slices((
-        tf.cast(to_categorical(df['label'].values, num_classes=2), tf.float32)
-    ))
-)).shuffle(buffer_size=2048)
+# ds = tf.data.Dataset.zip((
+#     tf.data.Dataset.from_tensor_slices((
+#         tf.cast(df[dense_cols].values, tf.float32),
+#         tf.cast(df[cat_cols].values, tf.int32),
+#     )),
+#     tf.data.Dataset.from_tensor_slices((
+#         tf.cast(to_categorical(df['label'].values, num_classes=2), tf.float32)
+#     ))
+# )).shuffle(buffer_size=2048)
 
 
-ds_test = ds.take(int(len(ds) * TRAIN_SPLIT))
-ds_train = ds.skip(len(ds_test))
-ds_valid = ds_test.take(int(len(ds_test) * VALIDATION_SPLIT))
-ds_test = ds_test.skip(len(ds_valid))
+# ds_test = ds.take(int(len(ds) * TRAIN_SPLIT))
+# ds_train = ds.skip(len(ds_test))
+# ds_valid = ds_test.take(int(len(ds_test) * VALIDATION_SPLIT))
+# ds_test = ds_test.skip(len(ds_valid))
 
 
 
 #
 # Train the model
 
-model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
-    loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-    metrics=['accuracy']
-)
+# model.compile(
+#     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
+#     loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+#     metrics=['accuracy']
+# )
 
-BATCH_SIZE = 128
+# BATCH_SIZE = 128
 
-model.fit(
-  ds_train.batch(BATCH_SIZE),
-  validation_data=ds_valid.batch(BATCH_SIZE),
-  callbacks=[
-    tf.keras.callbacks.EarlyStopping(patience=6, restore_best_weights=True)
-    ],
-  epochs=100,
-  verbose=1,
-)
+# model.fit(
+#   ds_train.batch(BATCH_SIZE),
+#   validation_data=ds_valid.batch(BATCH_SIZE),
+#   callbacks=[
+#     tf.keras.callbacks.EarlyStopping(patience=6, restore_best_weights=True)
+#     ],
+#   epochs=100,
+#   verbose=1,
+# )
 
-model_score = model.evaluate(ds_test.batch(BATCH_SIZE))
-# print(f'Loss {results[0]}, Accuracy {results[1]}')
-logging.info(f"model score: {model_score[0]:.3f}")
+# model_score = model.evaluate(ds_test.batch(BATCH_SIZE))
+# # print(f'Loss {results[0]}, Accuracy {results[1]}')
+# logging.info(f"model score: {model_score[0]:.3f}")
 
 
 #
-# model.fit(X_train, y_train)
+model.fit(X_train, y_train)
 
-# model_score = model.score(X_test, y_test)
+model_score = model.score(X_test, y_test)
 
-# logging.info(f"model score: {model_score:.3f}")
+logging.info(f"model score: {model_score:.3f}")
 
 # save the model
 dump(model, "{}.joblib".format(proj_id))
