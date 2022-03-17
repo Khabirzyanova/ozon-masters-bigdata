@@ -1,0 +1,7 @@
+CREATE TABLE hw2_pred (
+  id INT,
+  pred DOUBLE)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+LOCATION 'Daniil-Selikhanovych_hw2_pred';
