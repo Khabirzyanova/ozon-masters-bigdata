@@ -42,7 +42,6 @@ CREATE TEMPORARY EXTERNAL TABLE hw2_test (
   day_number string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
---lines terminated by '\n'
 STORED AS TEXTFILE
 LOCATION '/datasets/criteo_test_large_features'
 TBLPROPERTIES ('serialization.null.format' = 'NULL');
