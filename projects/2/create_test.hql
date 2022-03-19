@@ -44,5 +44,5 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 --lines terminated by '\n'
 STORED AS TEXTFILE
-LOCATION '/datasets/criteo_test_large_features'
+LOCATION ' /datasets/criteo/criteo_test_large_features' 
 TBLPROPERTIES ('serialization.null.format' = 'NULL');
