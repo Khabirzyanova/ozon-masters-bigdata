@@ -4,4 +4,4 @@ CREATE TABLE hw2_pred (
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
-LOCATION 'Khabirzyanova_hw2_pred';
+LOCATION 'Daniil-Selikhanovych_hw2_pred';
