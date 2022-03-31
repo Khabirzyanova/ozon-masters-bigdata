@@ -1,18 +1,18 @@
 CREATE TEMPORARY EXTERNAL TABLE hw2_test (
-  id BIGINT,
-  if1 INT,
-  if2 INT,
-  if3 INT,
-  if4 INT,
-  if5 INT,
-  if6 INT,
-  if7 INT,
-  if8 INT,
-  if9 INT,
-  if10 INT,
-  if11 INT,
-  if12 INT,
-  if13 INT,
+  id int,
+  if1 int,
+  if2 int,
+  if3 int,
+  if4 int,
+  if5 int,
+  if6 int,
+  if7 int,
+  if8 int,
+  if9 int,
+  if10 int,
+  if11 int,
+  if12 int,
+  if13 int,
   cf1 string,
   cf2 string,
   cf3 string,
@@ -42,7 +42,6 @@ CREATE TEMPORARY EXTERNAL TABLE hw2_test (
   day_number string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
---lines terminated by '\n'
 STORED AS TEXTFILE
 LOCATION ' /datasets/criteo/criteo_test_large_features' 
 TBLPROPERTIES ('serialization.null.format' = 'NULL');
