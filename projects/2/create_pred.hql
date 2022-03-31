@@ -1,6 +1,6 @@
 CREATE TABLE hw2_pred (
-  id INT,
-  pred DOUBLE)
+  id int,
+  pred float)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
