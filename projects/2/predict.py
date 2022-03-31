@@ -24,12 +24,18 @@ model = load("2.joblib")
 
 #read and infere
 read_opts=dict(
-        sep='\t', names=valid_fields, index_col=False, header=None,
-        iterator=True, chunksize=500, na_values='\\N'
+        sep='\t', names=[fields[0]]+fields[2:], index_col='id',
+        iterator=True, chunksize=100000, na_values='\\N'
 )
-
+rec_counter = 0
 for df in pd.read_csv(sys.stdin, **read_opts):
+    if len(df) == 0:
+        logging.info(f"found 0 length dataframe")
+        continue
+    df['day_number'] = "day_0"
     pred = model.predict_proba(df)
-    out = zip(df.id, pred[:, 1])
+    out = zip(df.index, pred[:, 0])
     print("\n".join(["{0}\t{1}".format(*i) for i in out]))
+    rec_counter += len(df)
+    logging.info(f"processed {rec_counter}")
 
