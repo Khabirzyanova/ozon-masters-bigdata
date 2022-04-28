@@ -1,0 +1,10 @@
+name: myenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7.10=hdb3f193_0
+  - pip=21.0.1=py37h06a4308_0
+  - pip:
+            - mlflow
+            - scikit-learncat
