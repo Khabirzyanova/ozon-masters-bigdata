@@ -1,0 +1,6 @@
+entry_points:
+  main:
+    parameters:
+      train_path: path
+      model_param1: {type: float, default: 1.0}
+    command: "python train.py --train_path={train_path} --model_param1={model_param1}"
