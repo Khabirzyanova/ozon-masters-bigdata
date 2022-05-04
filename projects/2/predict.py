@@ -34,7 +34,7 @@ for df in pd.read_csv(sys.stdin, **read_opts):
         continue
     df['day_number'] = "day_0"
     pred = model.predict_proba(df)
-    out = zip(df.index, pred[:, 0])
+    #out = zip(df.index, pred[:, 0])
     print("\n".join(["{0}\t{1}".format(*i) for i in out]))
     rec_counter += len(df)
     logging.info(f"processed {rec_counter}")
