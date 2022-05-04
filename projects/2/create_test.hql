@@ -1,4 +1,4 @@
-CREATE TEMPORARY EXTERNAL TABLE hw2_test (
+create temporary external table hw2_test(
   id int,
   if1 int,
   if2 int,
@@ -40,8 +40,7 @@ CREATE TEMPORARY EXTERNAL TABLE hw2_test (
   cf25 string,
   cf26 string,
   day_number string)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\t'
-STORED AS TEXTFILE
-LOCATION ' /datasets/criteo/criteo_test_large_features' 
-TBLPROPERTIES ('serialization.null.format' = 'NULL');
+row format delimited
+fields terminated by '\t'
+stored as textfile
+location '/datasets/criteo/criteo_test_large_features';
