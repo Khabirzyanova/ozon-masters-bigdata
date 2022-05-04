@@ -1,7 +1,7 @@
-CREATE TABLE hw2_pred (
+create table hw2_pred(
   id int,
   pred float)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\t'
-STORED AS TEXTFILE
-LOCATION 'Khabirzyanova_hw2_pred';
+row format delimited
+fields terminated by '\t'
+stored as textfile
+location 'Khabirzyanova_hw2_pred';
