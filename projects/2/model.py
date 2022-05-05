@@ -25,18 +25,6 @@ numeric_transformer = Pipeline(steps=[
     ('scaler', StandardScaler())
 ])
 
-#categorical_transformer = Pipeline(steps=[
-#    ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-#    ('onehot', OneHotEncoder(handle_unknown='ignore'))
-#])
-
-#preprocessor = ColumnTransformer(
-#    transformers=[
-#        ('num', numeric_transformer, numeric_features),
-#        ('cat', categorical_transformer, categorical_features)
-#    ]
-# )
-
 preprocessor = ColumnTransformer(
     transformers=[
         ('num', numeric_transformer, numeric_features)
