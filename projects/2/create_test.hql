@@ -1,3 +1,4 @@
+use Khabirzyanova;
 create temporary external table hw2_test(
   id int,
   if1 int,

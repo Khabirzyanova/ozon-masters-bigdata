@@ -1,4 +1,5 @@
-create table Khabirzyanova.hw2_pred(
+use Khabirzyanova;
+create table hw2_pred(
   id int,
   pred float)
 row format delimited
