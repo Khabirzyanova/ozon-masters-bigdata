@@ -7,4 +7,5 @@ dependencies:
   - pip=21.0.1=py37h06a4308_0
   - pip:
             - mlflow
-            - scikit-learncat
+            - scikit-learn
+            - pyarrow
