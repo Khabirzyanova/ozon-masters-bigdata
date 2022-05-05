@@ -1,4 +1,5 @@
-mlruns, *.sqlite
+*mlruns
+*.sqlite
 *.joblib
 *.crc
 /*csv
