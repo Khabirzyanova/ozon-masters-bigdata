@@ -1,4 +1,3 @@
-use Khabirzyanova;
 insert overwrite directory 'Khabirzyanova_hiveout'
 row format delimited
 fields terminated by '\t' 
